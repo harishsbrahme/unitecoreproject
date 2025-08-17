@@ -39,6 +39,8 @@ TaskSchema.pre('updateOne', function(next) {
     }
     next();
 });
+
+TaskSchema.index({ title: 'text', description: 'text' });
 const Task = mongoose.model('Task', TaskSchema);
 
 module.exports = Task;
