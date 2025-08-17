@@ -5,7 +5,7 @@ const validateTask = require('../middlewares/dataauthentication.middleware');
 
 router.post('/tasks',validateTask, async (req, res) => {
     try {
-        const taskdetails = req.body;
+        const taskdetails = req.body; // Ex. { title: "Task 1", description: "Task description", status: "pending", priority: 2, dueDate: "2023-12-31T00:00:00.000Z" }
         const response = await taskController.createTask(taskdetails);
         res.status(201).json(response);
     } catch (error) {
