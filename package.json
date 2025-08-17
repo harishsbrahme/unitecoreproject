@@ -1,0 +1,28 @@
+{
+  "name": "unicore",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/harishsbrahme/unitecoreproject.git"
+  },
+  "keywords": [],
+  "author": "Harish Brahme",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/harishsbrahme/unitecoreproject/issues"
+  },
+  "homepage": "https://github.com/harishsbrahme/unitecoreproject#readme",
+  "dependencies": {
+    "express": "^5.1.0",
+    "mongoose": "^8.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
