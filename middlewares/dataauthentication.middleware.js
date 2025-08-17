@@ -1,16 +1,14 @@
 const validateTask = (req, res, next) => {
-    const {status, priority } = req.body;
-    const errors = [];
+    const {title,status, priority } = req.body;
+       if (!title || typeof title !== 'string') {
+        return res.status(400).json({ message: 'Title is required and must be a string.' });
+    }
     if (priority && (priority < 1 || priority > 3)) {
-        errors.push('Priority must be between 1 and 3.');
+        return res.status(400).json({ message: 'Priority must be between 1 and 3.' });
     }
 
      if (status && !['pending', 'in-progress', 'completed'].includes(status)) {
-        errors.push('Status must be one of the following: pending, in-progress, completed.');
-    }
-
-    if (errors.length > 0) {
-        return res.status(400).json({ errors });
+        return res.status(400).json({ message: 'Status must be one of "pending", "in-progress", or "completed".' });
     }
 
     next();

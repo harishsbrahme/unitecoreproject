@@ -7,9 +7,9 @@ router.post('/tasks',validateTask, async (req, res) => {
     try {
         const taskdetails = req.body;
         const response = await taskController.createTask(taskdetails);
-        res.statusCode(200).json(response);
+        res.statusCode(201).json(response);
     } catch (error) {
-        res.statusCode(503).json({ msg: error.message });
+        res.statusCode(500).json({ msg: error.message });
     }
 });
 router.get('/tasks', async (req, res) => {
@@ -17,7 +17,7 @@ router.get('/tasks', async (req, res) => {
         const taskDetails = await taskController.getTasks();
         res.statusCode(200).json(taskDetails);
     } catch (error) {
-        res.statusCode(503).json({ msg: error.message });
+        res.statusCode(500).json({ msg: error.message });
     }
 })
 router.get('/tasks/:id', async (req, res) => {
@@ -26,7 +26,7 @@ router.get('/tasks/:id', async (req, res) => {
         const taskDetails = await taskController.getTaskById(taskId);
         res.statusCode(200).json(taskDetails);
     } catch (error) {
-        res.statusCode(503).json({ msg: error.message });
+        res.status(404).json({ msg: 'Task not found', error: error.message });
     }
 });
 
@@ -37,7 +37,10 @@ router.put('/tasks/:id',validateTask, async (req, res) => {
         const response = await taskController.updateTask(taskId,taskdetails);
         res.statusCode(200).json(response);
     } catch (error) {
-        res.statusCode(503).json({ msg: error.message });
+        if (error.message === 'Task not found') {
+            return res.status(404).json({ msg: error.message });
+        }
+        res.statusCode(500).json({ msg: error.message });
     }
 });
 
@@ -45,9 +48,14 @@ router.delete('/tasks/:id', async (req, res) => {
     try {
         const taskId = req.params.id;
         const taskDetails = await taskController.deleteTaskById(taskId);
+       
         res.statusCode(200).json({msg:"Task deleted successfully!!!"});
     } catch (error) {
-        res.statusCode(503).json({ msg: error.message });
+          if (error.message === 'Task not found') {
+            res.status(404).json({ msg: error.message });
+        } else {
+            res.status(500).json({ msg: error.message });
+        }
     }
 });
 module.exports = router;

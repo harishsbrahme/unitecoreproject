@@ -22,7 +22,8 @@ const getTaskById = async (taskId) => {
 const updateTask = async (taskId, taskDetails) => {
     const updatedTask = await Task.updateOne(
         { _id: taskId },
-        { $set: taskDetails }
+        { $set: taskDetails },
+        { new: true }
     );
     if (!updatedTask.matchedCount) {
         throw new Error('Task not found');
@@ -31,8 +32,11 @@ const updateTask = async (taskId, taskDetails) => {
 };
 
 const deleteTaskById = async (taskId) => {
-    const task = {};
-    return task;
+    const deletedTask = await Task.findByIdAndDelete(taskId); 
+    if (!deletedTask) {
+        throw new Error('Task not found');
+    }
+    return deletedTask; 
 }
 
 
