@@ -11,7 +11,7 @@ const createTask = async (taskDetails) => {
 
 const getTasks = async (page = 1, limit = 10) => {
     const skip = (page - 1) * limit;
-    const allTasks = await Task.find().skip(skip).limit(limit);
+    const allTasks = await Task.find().skip(skip).limit(limit).sort({priority:1});
     const totalTasks = await Task.countDocuments(); 
     const totalPages = Math.ceil(totalTasks / limit); 
     return {
@@ -47,7 +47,24 @@ const deleteTaskById = async (taskId) => {
     return deletedTask; 
 }
 
+const searchTasks = async (searchTerm, page = 1, limit = 10) => {
+    const skip = (page - 1) * limit;
 
+    const searchResults = await Task.find(
+        { $text: { $search: searchTerm } }  
+    )
+        .skip(skip)
+        .limit(limit);
+
+    const totalTasks = await Task.countDocuments({ $text: { $search: searchTerm } });
+    const totalPages = Math.ceil(totalTasks / limit);
+
+    return {
+        tasks: searchResults,
+        totalPages,
+        totalTasks,
+    };
+};
 
 
 module.exports = {
@@ -55,5 +72,6 @@ module.exports = {
     getTasks: getTasks,
     getTaskById: getTaskById,
     updateTask: updateTask,
-    deleteTaskById: deleteTaskById
+    deleteTaskById: deleteTaskById,
+    searchTasks:searchTasks
 }
