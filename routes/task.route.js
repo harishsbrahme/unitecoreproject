@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const taskController = require('../controller/task.controller')
+const taskController = require('../controller/task.controller');
+const validateTask = require('../middlewares/dataauthentication.middleware/validateTask');
 
-router.post('/tasks', (req, res) => {
+router.post('/tasks',validateTask, (req, res) => {
     try {
         const taskdetails = req.body;
         const response = taskController.createTask(taskdetails);
@@ -29,7 +30,7 @@ router.get('/tasks/:id', (req, res) => {
     }
 });
 
-router.put('/tasks/:id', (req, res) => {
+router.put('/tasks/:id',validateTask, (req, res) => {
     try {
         const taskId=req.params.id;
         const taskdetails = req.body;
