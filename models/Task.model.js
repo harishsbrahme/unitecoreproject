@@ -24,7 +24,21 @@ const TaskSchema = mongoose.Schema({
 },{
     timestamps:true
 });
+TaskSchema.pre('save', function(next) {
+    if (this.status === 'completed') {
+        this.dueDate = null;
+        this.updatedAt = Date.now();
+    }
+    next();
+});
 
+TaskSchema.pre('updateOne', function(next) {
+    if (this._update.status === 'completed') {
+        this._update.dueDate = null;
+        this._update.updatedAt = Date.now();
+    }
+    next();
+});
 const Task = mongoose.model('Task', TaskSchema);
 
 module.exports = Task;

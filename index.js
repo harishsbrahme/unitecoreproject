@@ -2,11 +2,11 @@ const express = require("express");
 const app = express();
 const mongoose = require('mongoose');
 app.use(express.json());
-// const taskRouter= require('./routes/task.route');
+const taskRouter= require('./routes/task.route');
 const PORT = process.env.PORT || 3000;
 // const mongoUrl='mongodb://localhost:27017'//local//dev
 const mongoUrl='mongodb+srv://brahmeharish:Min32v8R61nVcz9U@cluster0.77zzyag.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';//production
-// app.use('/',taskRouter);
+app.use('/',taskRouter);
 
 
 app.listen(PORT, () => {
