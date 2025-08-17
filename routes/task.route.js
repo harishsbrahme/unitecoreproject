@@ -14,8 +14,18 @@ router.post('/tasks',validateTask, async (req, res) => {
 });
 router.get('/tasks', async (req, res) => {
     try {
-        const taskDetails = await taskController.getTasks();
-        res.statusCode(200).json(taskDetails);
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const { tasks, page: currentPage, totalPages, totalTasks }  = await taskController.getTasks(page, limit);
+        res.statusCode(200).json({
+            tasks,
+            pagination: {
+                currentPage,
+                totalPages,
+                totalTasks,
+                limit
+            }
+        });
     } catch (error) {
         res.statusCode(500).json({ msg: error.message });
     }

@@ -9,9 +9,17 @@ const createTask = async (taskDetails) => {
     return task;
 };
 
-const getTasks = async () => {
-    const allTasks = await Task.find();
-    return allTasks;
+const getTasks = async (page = 1, limit = 10) => {
+    const skip = (page - 1) * limit;
+    const allTasks = await Task.find().skip(skip).limit(limit);
+    const totalTasks = await Task.countDocuments(); 
+    const totalPages = Math.ceil(totalTasks / limit); 
+    return {
+        allTasks,             
+        page,              
+        totalPages,        
+        totalTasks
+    };
 };
 
 const getTaskById = async (taskId) => {
